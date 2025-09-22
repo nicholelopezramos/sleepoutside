@@ -24,7 +24,6 @@ export default class Alert {
 
             if (main) {
                 main.prepend(section);
-                
             }
 
         }
