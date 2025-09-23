@@ -1,4 +1,5 @@
-import { setLocalStorage } from './utils.mjs';
+import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -29,44 +30,31 @@ export default class ProductDetails {
   }
 
 
-  renderProductDetails() {
-    // 1) get the container
-    const container = document.querySelector('.product-detail');
-    if (!container) return;
-
-    // 2) inject the HTML produced by the template
-    container.innerHTML = productDetailsTemplate(this.product);
+  addProductToCart() {
+    const cartItems = getLocalStorage("so-cart") || [];
+    cartItems.push(this.product);
+    setLocalStorage("so-cart", cartItems);
   }
 
-
-
-  addProductToCart() {
-    // 1) Try to load the cart from localStorage.
-    let cart = JSON.parse(localStorage.getItem('so-cart'));
-
-    // 2) If nothing is stored yet, or if it's not an array, start fresh.
-    if (!Array.isArray(cart)) cart = [];
-
-    // 3) Push the current product object into the cart array.
-    cart.push(this.product);
-
-    // 4) Save the updated cart back to localStorage using the helper.
-    setLocalStorage('so-cart', cart);
-
-    // 5) For debugging: log to the console what was added.
-    console.log('Added to cart:', this.product);
+  renderProductDetails() {
+    productDetailsTemplate(this.product);
   }
 }
 // returns the exact HTML structure required by /product_pages/index.html
 function productDetailsTemplate(product) {
-  const brand = product.Brand?.Name ?? '';
-  const nameNoBrand = product.NameWithoutBrand ?? product.Name ?? '';
-  const imgSrc = product.Image ?? '';
-  const descHtml = product.DescriptionHtmlSimple ?? '';
-  const color = product.Colors?.[0]?.ColorName ?? '';
+  document.querySelector("h2").textContent = product.Brand.Name;
+  document.querySelector("h3").textContent = product.NameWithoutBrand;
 
-  const priceNumber = Number(product.FinalPrice ?? product.ListPrice);
-  const priceText = Number.isFinite(priceNumber) ? priceNumber.toFixed(2) : '—';
+  const productImage = document.getElementById("productImage");
+  productImage.src = product.Image;
+  productImage.alt = product.NameWithoutBrand;
+
+  document.getElementById("productPrice").textContent = product.FinalPrice;
+  document.getElementById("productColor").textContent = product.Colors[0].ColorName;
+  document.getElementById("productDesc").innerHTML = product.DescriptionHtmlSimple;
+
+  document.getElementById("addToCart").dataset.id = product.Id;
+}
 
   return `
     <h3>${brand}</h3>
@@ -91,6 +79,6 @@ function productDetailsTemplate(product) {
       <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
     </div>
   `;
-}
+
 
 
