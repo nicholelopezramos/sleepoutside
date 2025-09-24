@@ -28,37 +28,8 @@ export function setClick(selector, callback) {
   });
   qs(selector).addEventListener('click', callback);
 }
-
-export function renderListWithTemplate (templateFn, parentElement, list, position = 'afterbegin', clear = false) {
-  if (clear){
-    parentElement.innerHtml = '';
+export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = false) {
+  if (clear) {
+    parentElement.innerHTML = "";
   }
-}
-
-export function renderWithTemplate (templateFn, parentElement, data, callback = 'afterbegin', clear = false) {
-  if (clear){
-    parentElement.innerHtml = '';
-  }
-  if(callback){
-    callback(data);
-  }
-}
-
-
-export async function loadTemplate(path){
-  const res = await fetch(path);
-  const template = await res.text();
-  return template;
-}
-
-
-export async function loadHeaderFooter() {
-  const headerTemplate = await loadTemplate('../public/partials/header.html');
-  const footerTemplate = await loadTemplate('../public/partials/footer.html');
-
-  const headerElement = document.querySelector('#main-header');
-  const footerElement = document.querySelector('#main-footer');
-
-  renderWithTemplate(headerTemplate, headerElement)
-  renderWithTemplate(headerTemplate, headerElement)
 }
