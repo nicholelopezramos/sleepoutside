@@ -1,32 +1,17 @@
-import { renderListWithTemplate } from "./utils.mjs";
+import { loadHeaderFooter, renderListWithTemplate } from "./utils.mjs";
+import { getParam } from "./utils.mjs";
+import ProductData from "./ProductData.mjs";
 
-<<<<<<< HEAD
+loadHeaderFooter();
+
 export default class ProductList {
     constructor(category, dataSource, listElement){
-=======
-function productCardTemplate(product) {
-    return `
-    <li class="product-card">
-      <a href="product_pages/?products=${product.Id}">
-        <img src="${product.Image}" alt="${product.Name}">
-        <h2>${product.Brand.Name}</h2>
-        <h3>${product.Name}</h3>
-        <p class="product-card__price">$${product.FinalPrice}</p>
-      </a>
-    </li>
-    `;
-}
-
-export default class ProductList {
-    constructor(category, dataSource, listElement) {
->>>>>>> main
         this.category = category;
         this.dataSource = dataSource;
         this.listElement = listElement;
     }
 
     async init() {
-<<<<<<< HEAD
         const list = await this.dataSource.getData(this.category);
 
     }
@@ -45,20 +30,36 @@ export default class ProductList {
     renderList(list) {
         renderListWithTemplate(this.productCardTemplate.bind(this), this.listElement, list);
     }
-}
-=======
-        const list = await this.dataSource.getData();
-        this.renderList(list);
+
+     async init() {
+    let list;
+    
+    // Check if we're doing a search or category listing
+    if (this.searchTerm) {
+      list = await this.dataSource.searchProducts(this.searchTerm);
+    } else if (this.category) {
+      list = await this.dataSource.getData(this.category);
+    } else {
+      // Default to showing all products or handle as needed
+      list = [];
     }
+    
+    this.renderList(list);
+  }
 
-    renderList(list) {
-        // const htmlStrings = list.map(productCardTemplate);
-        // this.listElement.insertAdjacentHTML("afterbegin", htmlStrings.join(""));
-
-        // apply use new utility function instead of the commented code above
-        renderListWithTemplate(productCardTemplate, this.listElement, list);
-
+  renderList(list) {
+    if (list && list.length > 0) {
+      renderListWithTemplate(productCardTemplate, this.listElement, list);
+    } else {
+      // Show no results message
+      this.listElement.innerHTML = `
+        <li class="no-results">
+          <p>No products found${this.searchTerm ? ` for "${this.searchTerm}"` : ''}.</p>
+        </li>
+      `;
     }
-
+  }
 }
->>>>>>> main
+    
+)
+

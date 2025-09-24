@@ -2,6 +2,7 @@ import ProductData from  './ProductData.mjs';
 import ProductList from './ProductList.mjs';
 import Alert from './alert.js';
 import { loadHeaderFooter } from './utils.mjs';
+import { getParam } from './utils.mjs';
 
 const alert = new Alert('../public/json/alert.json');
 alert.showAlerts();
@@ -19,6 +20,29 @@ const myList = new ProductList(category, dataSource, listElement);
 myList.init();
 
 
+const searchTerm = getParam('search');
+
+const titleElement = document.querySelector('#category-title');
+
+if (titleElement) {
+  if (searchTerm) {
+    titleElement.textContent = `Search Results: "${searchTerm}"`;
+  } else if (category) {
+    const categoryName = category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ');
+    titleElement.textContent = `Top Products: ${categoryName}`;
+  } else {
+    titleElement.textContent = 'All Products';
+  }
+}
+
+
+// Set search term if it exists
+if (searchTerm) {
+  myList.searchTerm = searchTerm;
+}
+
+// Finally call the init method to show the products
+myList.init();
 
 // const productData = new ProductData();
 // const productList = new ProductList();

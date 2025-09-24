@@ -23,6 +23,11 @@ export default class ProductData {
     const products = await this.getData();
     return products.find((item) => item.Id === id);
   }
-}
 
+  async searchProducts(searchTerm){
+    const response = await fetch(`${baseURL}products/search/${encodeURIComponent(searchTerm)}`)
+    const data = convertToJson(response)
+    return data.Result;
+  }
+}
 
