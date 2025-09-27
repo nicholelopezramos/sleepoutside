@@ -92,5 +92,3 @@ function productDetailsTemplate(product) {
     </div>
   `;
 }
-
-
