@@ -1,23 +1,29 @@
-function convertToJson(res) {
-  if (res.ok) {
-    return res.json();
-  } else {
-    throw new Error("Bad Response");
+const baseURL = import.meta.env.VITE_SERVER_URL
+
+async function convertToJson(res) {
+  // I prefer async/await here for cleaner flow and consistent error handling.
+  if (!res.ok) {
+    // I want a helpful error message if the fetch fails.
+    throw new Error(`HTTP ${res.status} while fetching ${res.url}`);
   }
+  return res.json();
 }
 
 export default class ProductData {
-  constructor(category) {
-    this.category = category;
-    this.path = `/json/${this.category}.json`;
+  constructor() {
+    
   }
-  getData() {
-    return fetch(this.path)
-      .then(convertToJson)
-      .then((data) => data);
+
+  async getData(category) {
+    const response = await fetch(`${baseURL}products/search/${category} `);
+    const data = await convertToJson(response);
+    return data.Result;
   }
-  async findProductById(id) {
-    const products = await this.getData();
-    return products.find((item) => item.Id === id);
+
+  async getProductById(id) {
+    // I will need this for the product detail page in the next step.
+    const response = await fetch(`${baseURL}product/${id}`);
+    const data = await convertToJson(response);
+    return data.Result;
   }
 }

@@ -90,7 +90,7 @@ p {
   margin-top: -1.3em;
 }
 
-.logo--square > div {
+.logo--square>div {
   margin-top: -1.7em;
 }
 
@@ -240,6 +240,71 @@ button {
   grid-row: 2;
   grid-column: 3;
 }
+
+.categories {
+  margin-block: 2rem;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.category-grid .cat {
+  display: block;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: .5rem;
+  text-decoration: none;
+}
+
+.category-grid .cat:hover {
+  outline: 2px solid #333;
+}
+
+/* I use a small badge for discounted items */
+.badge--sale {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-radius: 0.375rem;
+  background: #d32f2f;
+  /* red-ish */
+  color: #fff;
+  line-height: 1;
+}
+
+/* I ensure the image container can hold the badge in a corner */
+.product-card__media {
+  position: relative;
+  display: block;
+}
+
+/* I strike through the compare-at price and lighten the color */
+.price--compare {
+  text-decoration: line-through;
+  color: #7a7a7a;
+  margin-left: 0.5rem;
+  font-size: 0.95em;
+}
+
+/* I make the final price a bit bolder to stand out */
+.price--final {
+  font-weight: 700;
+}
+
+/* Optional: slightly highlight discounted cards */
+.product-card[data-discounted="true"] {
+  /* I keep it subtle to avoid visual noise */
+  outline: 1px dashed #d32f2f20;
+  outline-offset: 4px;
+}
+
 
 @media screen and (min-width: 500px) {
   body {

@@ -1,4 +1,4 @@
-import { setLocalStorage } from './utils.mjs';
+import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -24,14 +24,14 @@ export default class ProductDetails {
     // Notice the .bind(this). This callback will not work if the bind(this) is missing. 
     // Review the readings from this week on 'this' to understand why.
     document
-      .getElementById('addToCart')
-      .addEventListener('click', this.addProductToCart.bind(this));
+      .getElementById("addToCart")
+      .addEventListener("click", this.addProductToCart.bind(this));
   }
 
 
   renderProductDetails() {
     // 1) get the container
-    const container = document.querySelector('.product-detail');
+    const container = document.querySelector(".product-detail");
     if (!container) return;
 
     // 2) inject the HTML produced by the template
@@ -61,7 +61,8 @@ export default class ProductDetails {
 function productDetailsTemplate(product) {
   const brand = product.Brand?.Name ?? '';
   const nameNoBrand = product.NameWithoutBrand ?? product.Name ?? '';
-  const imgSrc = product.Image ?? '';
+  const imgSrc =
+    product.Images?.PrimaryLarge || product.Images?.PrimaryMedium || '/images/placeholder.png';
   const descHtml = product.DescriptionHtmlSimple ?? '';
   const color = product.Colors?.[0]?.ColorName ?? '';
 
